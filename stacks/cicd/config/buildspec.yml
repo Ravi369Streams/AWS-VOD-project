@@ -1,0 +1,38 @@
+version: 0.2
+
+env:
+    variables:
+        # todo: make buildspec a templte so versions can be dynamically added.
+        terraform_version: 1.10.3
+        terragrunt_version: 0.63.6
+
+phases:
+    install:
+        on-failure: ABORT
+        commands:
+            - echo Entered the install phase...
+            - wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+            - sudo apt update && sudo apt install terraform=$(echo $terraform_version)
+            - wget -O - https://github.com/gruntwork-io/terragrunt/releases/download/v$(echo $terragrunt_version)/terragrunt_linux_amd64
+            - mv terragrunt_linux_amd64 terragrunt
+            - chmod u+x terragrunt
+            - mv terragrunt /usr/local/bin/terragrunt
+
+    pre_build:
+        on-failure: ABORT
+        commands:
+            - command
+            - command
+
+    build:
+        on-failure: ABORT
+        commands:
+            - command
+            - command
+
+    post_build:
+        on-failure: ABORT
+        commands:
+            - command
+            - command
