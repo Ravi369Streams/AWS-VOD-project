@@ -6,4 +6,8 @@ terraform {
   source = "${get_repo_root()}/stacks/cicd"
 }
 
-inputs = {}
+inputs = {
+  additional_default_tags = {
+    sub-project = "cicd"
+  }
+}

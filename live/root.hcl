@@ -12,6 +12,13 @@ generate "provider" {
   path = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents = <<-EOF
+  variable "additional_default_tags" {
+    type = map
+    default = {
+      sub-project = ""
+    }
+  }
+
   terraform {
     required_providers {
       aws = {
@@ -24,9 +31,12 @@ generate "provider" {
   provider "aws" {
     region = "eu-central-1"
     default_tags {
-      tags = {
-        project = "VOD-project"
-      }
+      tags = merge(
+        {
+          project = "VOD-project"
+        },
+        var.additional_default_tags
+      )
     }
   }
   EOF
